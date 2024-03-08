@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 void main() {
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSwatch().copyWith(secondary: Colors.amber),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Apps Salo Musk Motors'),
+      home: const MyHomePage(title: ''),
     );
   }
 }
@@ -74,55 +75,58 @@ class MyHomePage extends StatelessWidget {
                       MaterialPageRoute(builder: (context) => const QRScreen()),
                     );
                   },
-
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.black,
-                    padding: const EdgeInsets.symmetric(horizontal: 75, vertical: 15
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 75, vertical: 15),
+                    elevation: 25,
+                    shape: RoundedRectangleBorder(
+                      // Usa RoundedRectangleBorder para el radio del borde
+                      borderRadius: BorderRadius.circular(
+                          15.0), // Ajusta la redondez de las esquinas
                     ),
-                    elevation: 20,
-                    shape: RoundedRectangleBorder( // Usa RoundedRectangleBorder para el radio del borde
-                      borderRadius: BorderRadius.circular(15.0), // Ajusta la redondez de las esquinas
-                    ),
-
                   ),
-
-                  child: const Text('Escanear QR',
+                  child: const Text(
+                    'Escanear QR',
                     style: TextStyle(
-                    fontFamily: 'Roboto', // Reemplaza con la familia de la fuente que deseas
-                    fontSize: 22,
+                      fontFamily:
+                          'Roboto', // Reemplaza con la familia de la fuente que deseas
+                      fontSize: 22,
                       color: Colors.blueGrey,
                       fontWeight: FontWeight.bold,
-
                     ),
                   ),
                 ),
                 const SizedBox(height: 25),
                 ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const AuthOptionsScreen()),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black,
-                    padding: const EdgeInsets.symmetric(horizontal: 72, vertical: 15),
-                    elevation: 20,
-                    shape: RoundedRectangleBorder( // Usa RoundedRectangleBorder para el radio del borde
-                      borderRadius: BorderRadius.circular(15.0), // Ajusta la redondez de las esquinas
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const AuthOptionsScreen()),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.black,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 72, vertical: 15),
+                      elevation: 25,
+                      shape: RoundedRectangleBorder(
+                        // Usa RoundedRectangleBorder para el radio del borde
+                        borderRadius: BorderRadius.circular(
+                            15.0), // Ajusta la redondez de las esquinas
+                      ),
                     ),
-
-                  ),
-                  child: const Text('Iniciar Sesión',
-                    style: TextStyle(
-                    fontFamily: 'Roboto', // Reemplaza con la familia de la fuente que deseas
-                    fontSize: 22,
-                      color: Colors.blueGrey,
-                      fontWeight: FontWeight.bold,
-                  ),
-                  )
-
-                ),
+                    child: const Text(
+                      'Iniciar Sesión',
+                      style: TextStyle(
+                        fontFamily:
+                            'Roboto', // Reemplaza con la familia de la fuente que deseas
+                        fontSize: 22,
+                        color: Colors.blueGrey,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )),
               ],
             ),
           ),
@@ -133,7 +137,7 @@ class MyHomePage extends StatelessWidget {
 }
 
 class QRScreen extends StatefulWidget {
-  const QRScreen({super.key});
+  const QRScreen({Key? key}) : super(key: key);
 
   @override
   _QRScreenState createState() => _QRScreenState();
@@ -141,42 +145,50 @@ class QRScreen extends StatefulWidget {
 
 class _QRScreenState extends State<QRScreen> {
   final GlobalKey _qrKey = GlobalKey(debugLabel: 'QR');
-
   Barcode? _barcode;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Escaneo de QR'),
+        title: const Text(""),
       ),
+      backgroundColor: Color.fromARGB(115, 31, 45, 59),
       body: Center(
-        child: Column(
+        child: Stack(
           children: [
-            Expanded(
-              flex: 4,
-              child: QRView(
-                key: _qrKey,
-                onQRViewCreated: _onQRViewCreated,
+            QRView(
+              key: _qrKey,
+              onQRViewCreated: _onQRViewCreated,
+            ),
+            Center(
+              child: Container(
+                width: 225, // Ancho del marco
+                height: 225, // Altura del marco
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Colors.white, // Color del borde del marco
+                    width: 4, // Grosor del borde del marco
+                  ),
+                ),
               ),
             ),
-            Expanded(
-              flex: 1,
-              child: Center(
-                child: _barcode != null
-                    ? Text('Resultado del escaneo: ${_barcode!.code}')
-                    : const Text('Escanee el QR de su llave...',
+            Positioned(
+              bottom: 55, // Espacio desde abajo
+              child: Container(
+                padding: EdgeInsets.all(42),
+                color: Colors.grey.withOpacity(0.8), // Fondo gris con opacidad
+                child: Text(
+                  'Escanee el QR de su llave...',
                   style: TextStyle(
-                  fontFamily: 'Roboto', // Reemplaza con la familia de la fuente que deseas
-                  fontSize: 22,
-                  color: Colors.blueGrey,
-                  fontWeight: FontWeight.bold,
+                    fontFamily: 'Roboto',
+                    fontSize: 22,
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              )
-                ),
-
               ),
-
+            ),
           ],
         ),
       ),
@@ -194,13 +206,14 @@ class _QRScreenState extends State<QRScreen> {
   @override
   void dispose() {
     super.dispose();
-
   }
 }
 
-
-
-
+void any() {
+  runApp(MaterialApp(
+    home: QRScreen(),
+  ));
+}
 
 class AuthOptionsScreen extends StatelessWidget {
   const AuthOptionsScreen({super.key});
@@ -221,7 +234,8 @@ class AuthOptionsScreen extends StatelessWidget {
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.black87,
-                padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
                 elevation: 20,
               ),
               child: const Text('Patrón'),
@@ -233,7 +247,8 @@ class AuthOptionsScreen extends StatelessWidget {
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.black87,
-                padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
                 elevation: 20,
               ),
               child: const Text('PIN'),
@@ -245,7 +260,8 @@ class AuthOptionsScreen extends StatelessWidget {
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.black87,
-                padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
                 elevation: 20,
               ),
               child: const Text('Huella'),
@@ -257,7 +273,8 @@ class AuthOptionsScreen extends StatelessWidget {
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.black87,
-                padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
                 elevation: 20,
               ),
               child: const Text('Contraseña'),

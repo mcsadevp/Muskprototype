@@ -6,7 +6,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,13 +16,13 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSwatch().copyWith(secondary: Colors.amber),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: ''),
+      home: const MyHomePage(title: 'Inicio'),
     );
   }
 }
 
 class MyHomePage extends StatelessWidget {
-  const MyHomePage({super.key, required this.title});
+  const MyHomePage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
@@ -30,7 +30,6 @@ class MyHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.background,
         title: Text(title),
       ),
       body: Stack(
@@ -52,7 +51,7 @@ class MyHomePage extends StatelessWidget {
               child: Text(
                 'BIENVENIDO',
                 style: TextStyle(
-                  fontFamily: 'roboto',
+                  fontFamily: 'Roboto',
                   color: Colors.blueGrey,
                   fontSize: 48,
                   fontWeight: FontWeight.bold,
@@ -80,16 +79,13 @@ class MyHomePage extends StatelessWidget {
                         horizontal: 75, vertical: 15),
                     elevation: 25,
                     shape: RoundedRectangleBorder(
-                      // Usa RoundedRectangleBorder para el radio del borde
-                      borderRadius: BorderRadius.circular(
-                          15.0), // Ajusta la redondez de las esquinas
+                      borderRadius: BorderRadius.circular(15.0),
                     ),
                   ),
                   child: const Text(
                     'Escanear QR',
                     style: TextStyle(
-                      fontFamily:
-                          'Roboto', // Reemplaza con la familia de la fuente que deseas
+                      fontFamily: 'Roboto',
                       fontSize: 22,
                       color: Colors.blueGrey,
                       fontWeight: FontWeight.bold,
@@ -98,34 +94,32 @@ class MyHomePage extends StatelessWidget {
                 ),
                 const SizedBox(height: 25),
                 ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const AuthOptionsScreen()),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.black,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 72, vertical: 15),
-                      elevation: 25,
-                      shape: RoundedRectangleBorder(
-                        // Usa RoundedRectangleBorder para el radio del borde
-                        borderRadius: BorderRadius.circular(
-                            15.0), // Ajusta la redondez de las esquinas
-                      ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const AuthOptionsScreen()),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.black,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 72, vertical: 15),
+                    elevation: 25,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15.0),
                     ),
-                    child: const Text(
-                      'Iniciar Sesión',
-                      style: TextStyle(
-                        fontFamily:
-                            'Roboto', // Reemplaza con la familia de la fuente que deseas
-                        fontSize: 22,
-                        color: Colors.blueGrey,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    )),
+                  ),
+                  child: const Text(
+                    'Iniciar Sesión',
+                    style: TextStyle(
+                      fontFamily: 'Roboto',
+                      fontSize: 22,
+                      color: Colors.blueGrey,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
@@ -136,50 +130,52 @@ class MyHomePage extends StatelessWidget {
 }
 
 class QRScreen extends StatefulWidget {
-  const QRScreen({super.key});
+  const QRScreen({Key? key}) : super(key: key);
 
   @override
   _QRScreenState createState() => _QRScreenState();
 }
 
 class _QRScreenState extends State<QRScreen> {
-  final GlobalKey _qrKey = GlobalKey(debugLabel: 'QR');
-  Barcode? _barcode;
+  final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
+  Barcode? barcode;
+  bool scanned = false;
+  Color scannedColor = const Color.fromARGB(115, 31, 45, 59);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(""),
+        title: const Text("Escanear QR"),
       ),
-      backgroundColor: const Color.fromARGB(115, 31, 45, 59),
+      backgroundColor: scannedColor,
       body: Center(
         child: Stack(
           children: [
             QRView(
-              key: _qrKey,
+              key: qrKey,
               onQRViewCreated: _onQRViewCreated,
             ),
             Center(
               child: Container(
-                width: 225, // Ancho del marco
-                height: 225, // Altura del marco
+                width: 225,
+                height: 225,
                 decoration: BoxDecoration(
                   border: Border.all(
-                    color: Colors.white, // Color del borde del marco
-                    width: 4, // Grosor del borde del marco
+                    color: scanned ? Colors.green : Colors.white,
+                    width: 4,
                   ),
                 ),
               ),
             ),
             Positioned(
-              bottom: 55, // Espacio desde abajo
+              bottom: 55,
               child: Container(
                 padding: const EdgeInsets.all(42),
-                color: Colors.grey.withOpacity(0.8), // Fondo gris con opacidad
-                child: const Text(
-                  'Escanee el QR de su llave...',
-                  style: TextStyle(
+                color: Colors.grey.withOpacity(0.8),
+                child: Text(
+                  scanned ? '' : 'Escanee el QR de su llave...',
+                  style: const TextStyle(
                     fontFamily: 'Roboto',
                     fontSize: 22,
                     color: Colors.black,
@@ -197,7 +193,41 @@ class _QRScreenState extends State<QRScreen> {
   void _onQRViewCreated(QRViewController controller) {
     controller.scannedDataStream.listen((barcode) {
       setState(() {
-        _barcode = barcode;
+        this.barcode = barcode;
+        scanned = true;
+
+        // Verificar si el código escaneado coincide con "X"
+        if (barcode!.code == "X") {
+          // Si coincide, cambiar el color de fondo a verde y navegar a la pantalla de bienvenida
+          scannedColor = Colors.green;
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    const WelcomeScreen(message: "Bienvenido Salomon")),
+          );
+        } else {
+          // Si no coincide, cambiar el color de fondo a rojo y mostrar un diálogo con "No corresponde"
+          scannedColor = Colors.red;
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title:
+                    const Text("QR Invalido, presiona para volver a intentar"),
+              );
+            },
+          );
+        }
+      });
+
+      // Agregar un retraso para simular un efecto visual antes de volver al color original del fondo
+      Future.delayed(const Duration(seconds: 0), () {
+        setState(() {
+          scanned = false;
+          scannedColor = const Color.fromARGB(
+              115, 31, 45, 59); // Restablecer el color de fondo original
+        });
       });
     });
   }
@@ -215,7 +245,7 @@ void any() {
 }
 
 class AuthOptionsScreen extends StatelessWidget {
-  const AuthOptionsScreen({super.key});
+  const AuthOptionsScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -279,6 +309,30 @@ class AuthOptionsScreen extends StatelessWidget {
               child: const Text('Contraseña'),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class WelcomeScreen extends StatelessWidget {
+  final String message;
+
+  const WelcomeScreen({Key? key, required this.message}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Bienvenido"),
+      ),
+      body: Center(
+        child: Text(
+          message,
+          style: const TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
     );

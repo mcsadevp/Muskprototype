@@ -207,7 +207,6 @@ class _QRScreenState extends State<QRScreen> {
                     const WelcomeScreen(message: "Bienvenido Salomon")),
           );
         } else {
-          // Si no coincide, cambiar el color de fondo a rojo y mostrar un diálogo con "No corresponde"
           scannedColor = Colors.red;
           showDialog(
             context: context,

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 void main() {
@@ -137,7 +136,7 @@ class MyHomePage extends StatelessWidget {
 }
 
 class QRScreen extends StatefulWidget {
-  const QRScreen({Key? key}) : super(key: key);
+  const QRScreen({super.key});
 
   @override
   _QRScreenState createState() => _QRScreenState();
@@ -153,7 +152,7 @@ class _QRScreenState extends State<QRScreen> {
       appBar: AppBar(
         title: const Text(""),
       ),
-      backgroundColor: Color.fromARGB(115, 31, 45, 59),
+      backgroundColor: const Color.fromARGB(115, 31, 45, 59),
       body: Center(
         child: Stack(
           children: [
@@ -176,9 +175,9 @@ class _QRScreenState extends State<QRScreen> {
             Positioned(
               bottom: 55, // Espacio desde abajo
               child: Container(
-                padding: EdgeInsets.all(42),
+                padding: const EdgeInsets.all(42),
                 color: Colors.grey.withOpacity(0.8), // Fondo gris con opacidad
-                child: Text(
+                child: const Text(
                   'Escanee el QR de su llave...',
                   style: TextStyle(
                     fontFamily: 'Roboto',
@@ -210,7 +209,7 @@ class _QRScreenState extends State<QRScreen> {
 }
 
 void any() {
-  runApp(MaterialApp(
+  runApp(const MaterialApp(
     home: QRScreen(),
   ));
 }

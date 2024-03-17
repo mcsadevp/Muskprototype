@@ -6,7 +6,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatelessWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
+  const MyHomePage({super.key, required this.title});
 
   final String title;
 
@@ -130,7 +130,7 @@ class MyHomePage extends StatelessWidget {
 }
 
 class QRScreen extends StatefulWidget {
-  const QRScreen({Key? key}) : super(key: key);
+  const QRScreen({super.key});
 
   @override
   _QRScreenState createState() => _QRScreenState();
@@ -197,7 +197,7 @@ class _QRScreenState extends State<QRScreen> {
         scanned = true;
 
         // Verificar si el código escaneado coincide con "X"
-        if (barcode!.code == "X") {
+        if (barcode.code == "X") {
           // Si coincide, cambiar el color de fondo a verde y navegar a la pantalla de bienvenida
           scannedColor = Colors.green;
           Navigator.push(
@@ -211,9 +211,9 @@ class _QRScreenState extends State<QRScreen> {
           showDialog(
             context: context,
             builder: (BuildContext context) {
-              return AlertDialog(
+              return const AlertDialog(
                 title:
-                    const Text("QR Invalido, presiona para volver a intentar"),
+                    Text("QR Invalido, presiona para volver a intentar"),
               );
             },
           );
@@ -244,7 +244,7 @@ void any() {
 }
 
 class AuthOptionsScreen extends StatelessWidget {
-  const AuthOptionsScreen({Key? key}) : super(key: key);
+  const AuthOptionsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -317,7 +317,7 @@ class AuthOptionsScreen extends StatelessWidget {
 class WelcomeScreen extends StatelessWidget {
   final String message;
 
-  const WelcomeScreen({Key? key, required this.message}) : super(key: key);
+  const WelcomeScreen({super.key, required this.message});
 
   @override
   Widget build(BuildContext context) {
